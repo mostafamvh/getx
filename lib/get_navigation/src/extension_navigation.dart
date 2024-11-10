@@ -881,21 +881,23 @@ extension GetNavigationExt on GetInterface {
 
   void closeAllDialogs({
     String? id,
+    dynamic result,
   }) {
     while ((isDialogOpen!)) {
-      closeOverlay(id: id);
+      closeOverlay(id: id, result: result);
     }
   }
 
-  void closeOverlay({String? id}) {
-    searchDelegate(id).navigatorKey.currentState?.pop();
+  void closeOverlay({String? id, dynamic result}) {
+    searchDelegate(id).navigatorKey.currentState?.pop(result);
   }
 
   void closeAllBottomSheets({
     String? id,
+    dynamic result,
   }) {
     while ((isBottomSheetOpen!)) {
-      searchDelegate(id).navigatorKey.currentState?.pop();
+      searchDelegate(id).navigatorKey.currentState?.pop(result);
     }
   }
 
@@ -930,10 +932,25 @@ extension GetNavigationExt on GetInterface {
       }
     }
 
-    handleClose(closeSnackbar, closeAllSnackbars, closeCurrentSnackbar);
-    handleClose(closeDialog, closeAllDialogs, closeOverlay, isDialogOpen);
-    handleClose(closeBottomSheet, closeAllBottomSheets, closeOverlay,
-        isBottomSheetOpen);
+    handleClose(
+      closeSnackbar,
+      closeAllSnackbars,
+      closeCurrentSnackbar,
+    );
+
+    handleClose(
+      closeDialog,
+      () => closeAllDialogs(id: id, result: result),
+      () => closeOverlay(id: id, result: result),
+      isDialogOpen,
+    );
+
+    handleClose(
+      closeBottomSheet,
+      () => closeAllBottomSheets(id: id, result: result),
+      () => closeOverlay(id: id, result: result),
+      isBottomSheetOpen,
+    );
   }
 
   /// **Navigation.pushReplacement()** shortcut .<br><br>
