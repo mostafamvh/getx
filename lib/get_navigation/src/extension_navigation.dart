@@ -913,7 +913,7 @@ extension GetNavigationExt on GetInterface {
   /// [id] is for when you are using nested navigation,
   /// as explained in documentation
   void close<T extends Object>({
-    bool closeAll = true,
+    bool closeAll = false,
     bool closeSnackbar = true,
     bool closeDialog = true,
     bool closeBottomSheet = true,
